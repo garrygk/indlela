@@ -73,11 +73,25 @@ export class HereMapComponent implements OnInit {
         // The routing mode:
         'mode': 'fastest;car',
         // The start point of the route:
-        'waypoint0': 'geo!-26.11314,27.816605',
+        'waypoint0': 'geo!-26.125314,27.836605',
         // The end point of the route:
-        'waypoint1': 'geo!-26.125314,27.836605', 
-        'waypoint2': 'geo!-26.168900,27.852340',
+        'waypoint1': 'geo!-26.11314,27.816605',
+        'waypoint2': 'geo!-26.1,28.0',
         'waypoint3': 'geo!-26.142515,28.046407',
+        // To retrieve the shape of the route we choose the route
+        // representation mode 'display'
+        'representation': 'display'
+      };
+
+      var secondRoutingParameters = {
+        // The routing mode:
+        'mode': 'fastest;car',
+        // The start point of the route:
+        'waypoint0': 'geo!-26.125314,27.836605',
+        // The end point of the route:
+        'waypoint1': 'geo!-26.11314,27.816605',
+        // 'waypoint2': 'geo!-26.1,28.0',
+        // 'waypoint3': 'geo!-26.142515,28.046407',
         // To retrieve the shape of the route we choose the route
         // representation mode 'display'
         'representation': 'display'
@@ -126,7 +140,7 @@ export class HereMapComponent implements OnInit {
 
         // Create a polyline to display the route:
         var routeLine = new H.map.Polyline(linestring, {
-        style: { strokeColor: 'blue', lineWidth: 5 }
+        style: { strokeColor: 'blue', lineWidth: 3 }
         });
       
         // Create a marker for the start point:
@@ -145,9 +159,93 @@ export class HereMapComponent implements OnInit {
         lat: otherPoint.latitude,
         lng: otherPoint.longitude
         });
+
+        const marker1 = new H.map.Marker({lat: -26.145314, lng:27.936605});
+        const marker2 = new H.map.Marker({lat: -26.1425, lng:28.046407});
+        const marker3 = new H.map.Marker({lat: -26.1, lng:28.0});
+        const marker4 = new H.map.Marker({lat: -26.142515, lng:28.046407});
       
         // Add the route polyline and the two markers to the map:
-        x.addObjects([routeLine, startMarker, otherMarker, endMarker]);
+        x.addObjects([routeLine, endMarker, startMarker, otherMarker]);
+      
+        // Set the map's viewport to make the whole route visible:
+        // x.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
+        }
+        } catch (error) {
+            alert(error);
+        }
+        
+    },
+    function(error) {
+    alert(error.message);
+    });
+
+
+    var secondRouter = this.platform.getRoutingService();
+    // let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
+    // Call calculateRoute() with the routing parameters,
+    // the callback and an error callback function (called if a
+    // communication error occurs):
+    secondRouter.calculateRoute(secondRoutingParameters, function(result) {
+
+        try {
+            console.log(result)
+
+        var route,
+        routeShape,
+        startPoint,
+        endPoint,
+        otherPoint,
+        linestring;
+        if(result.response.route) {
+        // Pick the first route from the response:
+        route = result.response.route[0];
+        // Pick the route's shape:
+        routeShape = route.shape;
+      
+        // Create a linestring to use as a point source for the route line
+        linestring = new H.geo.LineString();
+      
+        // Push all the points in the shape into the linestring:
+        routeShape.forEach(function(point) {
+        var parts = point.split(',');
+        linestring.pushLatLngAlt(parts[0], parts[1]);
+        });
+      
+        // Retrieve the mapped positions of the requested waypoints:
+        startPoint = route.waypoint[0].mappedPosition;
+        endPoint = route.waypoint[1].mappedPosition;
+        // otherPoint = route.waypoint[2].mappedPosition;
+
+        // Create a polyline to display the route:
+        var routeLine = new H.map.Polyline(linestring, {
+        style: { strokeColor: 'red', lineWidth: 5 }
+        });
+      
+        // Create a marker for the start point:
+        var startMarker = new H.map.Marker({
+        lat: startPoint.latitude,
+        lng: startPoint.longitude
+        });
+      
+        // Create a marker for the end point:
+        var endMarker = new H.map.Marker({
+        lat: endPoint.latitude,
+        lng: endPoint.longitude
+        });
+
+        // var otherMarker = new H.map.Marker({
+        // lat: otherPoint.latitude,
+        // lng: otherPoint.longitude
+        // });
+
+        // const marker1 = new H.map.Marker({lat: -26.145314, lng:27.936605});
+        // const marker2 = new H.map.Marker({lat: -26.1425, lng:28.046407});
+        // const marker3 = new H.map.Marker({lat: -26.1, lng:28.0});
+        // const marker4 = new H.map.Marker({lat: -26.142515, lng:28.046407});
+      
+        // Add the route polyline and the two markers to the map:
+        x.addObjects([routeLine, startMarker, endMarker]);
       
         // Set the map's viewport to make the whole route visible:
         // x.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
