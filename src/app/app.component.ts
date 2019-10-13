@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
             "app_id": "DonUiun0GLnIxjH5uqTY",
             "app_code": "OYOE0IPZZmcdB5fMRZh5ig"
         });
-        this.query = "starbucks";
+        this.query = "";
     }
 
     public ngOnInit() { }
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
             defaultLayers.normal.map,
             {
                 zoom: 10,
-                center: { lat: -26.145314, lng: 27.936605 }
+                center: { lat: -26.125314, lng: 27.836605 }
             }
         );
     }
