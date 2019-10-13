@@ -73,10 +73,10 @@ export class HereMapComponent implements OnInit {
         // The routing mode:
         'mode': 'fastest;car',
         // The start point of the route:
-        'waypoint0': 'geo!-26.125314,27.836605',
+        'waypoint0': 'geo!-26.11314,27.816605',
         // The end point of the route:
-        'waypoint1': 'geo!-26.170640,27.929580',
-        'waypoint2': 'geo!-26.1,28.0',
+        'waypoint1': 'geo!-26.125314,27.836605', 
+        'waypoint2': 'geo!-26.168900,27.852340',
         'waypoint3': 'geo!-26.142515,28.046407',
         // To retrieve the shape of the route we choose the route
         // representation mode 'display'
@@ -145,14 +145,9 @@ export class HereMapComponent implements OnInit {
         lat: otherPoint.latitude,
         lng: otherPoint.longitude
         });
-
-        const marker1 = new H.map.Marker({lat: -26.145314, lng:27.936605});
-        const marker2 = new H.map.Marker({lat: -26.1425, lng:28.046407});
-        const marker3 = new H.map.Marker({lat: -26.1, lng:28.0});
-        const marker4 = new H.map.Marker({lat: -26.142515, lng:28.046407});
       
         // Add the route polyline and the two markers to the map:
-        x.addObjects([routeLine, endMarker, startMarker, otherMarker]);
+        x.addObjects([routeLine, startMarker, otherMarker, endMarker]);
       
         // Set the map's viewport to make the whole route visible:
         // x.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});

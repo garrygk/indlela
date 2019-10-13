@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
             defaultLayers.normal.map,
             {
                 zoom: 10,
-                center: { lat: -26.125314, lng: 27.836605 }
+                center: { lat: -26.11314, lng: 27.816605 }
             }
         );
     }
